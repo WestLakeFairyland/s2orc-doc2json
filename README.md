@@ -1,4 +1,47 @@
-# Convert scientific papers to S2ORC JSON
+# doc2json for RAG
+
+This is a fork of the **doc2json** project to work with our system. It provides a **FastAPI** that accepts a PDF and returns the parsed content in a structured JSON format. The files are stored in the `test/work` directory.
+
+## Requirements
+
+- **Grobid**: This system relies on Grobid for processing PDFs into structured data.
+  - You need to [run Grobid](https://grobid.readthedocs.io/en/latest/Run-Grobid/) in Docker. It has been tested in **Windows WSL**.
+  - To run Grobid, use the following command:
+
+    ```bash
+    sudo docker run --rm --gpus all --init --ulimit core=0 -p 8070:8070 grobid/grobid:0.8.1
+    ```
+
+  - Grobid should only take a few seconds to process a PDF.
+
+## Behavior
+
+- **PDF to JSON**: The API takes a PDF file, processes it through Grobid, and returns a JSON with the following details:
+  - **Metadata**: Includes general paper information like title, authors, year, etc.
+  - **Body text**: Main content of the paper, which is organized by sections and paragraphs.
+  - **References**: Citations from the paper, which are stored separately in the JSON file. Citations include IDs that are linked in the main text.
+  - **Figures and Tables**: Captions for figures and tables are included in the `ref_entries`.
+
+### Limitations and Observations
+
+- **Paragraph Recognition**:
+  - Grobid does a fairly good job of connecting rows, though it's not 100% accurate with paragraphs.
+  - It sometimes misdivides paragraphs or adds additional paragraphs in sections like the abstract.
+  - There are cases where page breaks disrupt paragraph detection, although some of these are fixed automatically by Grobid.
+  
+- **Section Titles**:
+  - Each section of the body text includes a **section** field, which contains the section title.
+  - In some cases, the section title is missing or only includes a subtitle (e.g., "SME attribution visualization of Aqueous solubility", instead of "Methods", "Results").
+  
+- **Equations**:
+  - The detection and extraction of equations is not perfect at this stage. More refinement is needed for better handling of mathematical content.
+
+## TODO
+
+- [ ] **Setup the API**: Ensure that the FastAPI service is correctly configured to handle PDF uploads and Grobid processing.
+
+
+# The original README: Convert scientific papers to S2ORC JSON
 
 This project is a part of [S2ORC](https://github.com/allenai/s2orc). For S2ORC, we convert PDFs to JSON using Grobid and a custom TEI.XML to JSON parser. That TEI.XML to JSON parser (`grobid2json`) is made available here. We additionally process LaTeX dumps from arXiv. That parser (`tex2json`) is also made available here.
 
