@@ -65,9 +65,11 @@ def extract_metadata(json_data):
 
 # %% example usage
 if __name__ == "__main__":
-    # Example PDF path
-    prefix = '2023-Chemistry-intuitive explanation of graph neural networks for molecular property prediction with substructure masking'
     output_dir = "tests/work"
+    # Example PDF path
+    # prefix = '2023-Chemistry-intuitive explanation of graph neural networks for molecular property prediction with substructure masking'
+    prefix = 'dudev-lim-2013-competition-among-metal-ions-for-protein-binding-sites-determinants-of-metal-ion-selectivity-in-proteins'
+
     pdf_path = fr"{output_dir}/{prefix}.pdf"
 
     # Process the PDF to JSON
