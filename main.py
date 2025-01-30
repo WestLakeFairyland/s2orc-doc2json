@@ -12,7 +12,6 @@ def process_pdf_to_json(pdf_path, output_dir):
     """
     # Ensure the output directory exists
     os.makedirs(output_dir, exist_ok=True)
-
     # Generate the JSON output path directly in the output directory
     json_output_path = os.path.join(output_dir, os.path.basename(pdf_path).replace(".pdf", ".json"))
 
@@ -68,7 +67,8 @@ if __name__ == "__main__":
     output_dir = "tests/work"
     # Example PDF path
     # prefix = '2023-Chemistry-intuitive explanation of graph neural networks for molecular property prediction with substructure masking'
-    prefix = 'dudev-lim-2013-competition-among-metal-ions-for-protein-binding-sites-determinants-of-metal-ion-selectivity-in-proteins'
+    # prefix = 'dudev-lim-2013-competition-among-metal-ions-for-protein-binding-sites-determinants-of-metal-ion-selectivity-in-proteins'
+    prefix = 'transformato'
 
     pdf_path = fr"{output_dir}/{prefix}.pdf"
 

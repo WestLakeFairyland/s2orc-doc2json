@@ -1,25 +1,50 @@
 # doc2json for RAG
 
-This is a fork of the **doc2json** project to work with our system. It provides a **FastAPI** that accepts a PDF and returns the parsed content in a structured JSON format. The files are stored in the `test/work` directory.
+This is a fork of the **doc2json** project to work with our system. It provides a **FastAPI** that accepts a PDF and returns the parsed content in a structured JSON format. The (temporary) files are stored in the `test/work` directory.
+
+Architecture:
+
+```mermaid
+flowchart TB;
+    A[PDF] --> B[Grobid] --> C[JSON]
+    C --> D[full text]
+    C --> E[sections]
+```
 
 ## Requirements
 
+- Install this package.
+
+  ```shell
+  conda create -n pdf
+  conda activate pdf
+  conda install pip
+  pip install -e requirements.txt
+  ```
 - **Grobid**: This system relies on Grobid for processing PDFs into structured data.
-  - You need to [run Grobid](https://grobid.readthedocs.io/en/latest/Run-Grobid/) in Docker. It has been tested in **Windows WSL**.
+  - You need to [run Grobid](https://grobid.readthedocs.io/en/latest/Run-Grobid/) in Docker. It has been tested in (**Windows Docker Desktop**? and) **Windows WSL**.
   - To run Grobid, use the following command:
 
     ```bash
-    sudo docker run --rm --gpus all --init --ulimit core=0 -p 8070:8070 grobid/grobid:0.8.1
+    docker run --rm --gpus all --init --ulimit core=0 -p 8070:8070 grobid/grobid:0.8.1
     ```
 
   - Grobid should only take a few seconds to process a PDF.
+- This is included in the `restart.sh`. Modify the configs in it if you want.
 
-## Behavior
+  ```shell
+  bash restart.sh
+  ```
+  Please install Docker and it's usually add to `$PATH`.
+
+## Usage
+
+## Behavior, and json structure
 
 - **PDF to JSON**: The API takes a PDF file, processes it through Grobid, and returns a JSON with the following details:
   - **Metadata**: Includes general paper information like title, authors, year, etc.
-  - **Body text**: Main content of the paper, which is organized by sections and paragraphs.
-  - **References**: Citations from the paper, which are stored separately in the JSON file. Citations include IDs that are linked in the main text.
+  - **Body text**: Main content of the paper, which is organized by sections and paragraphs. `for item in data["pdf_parse"]["body_text"]`
+  - **References**: Citations from the paper, which are stored separately in each entry (`"cite_spans"`). Citations include IDs that are linked in the main text.
   - **Figures and Tables**: Captions for figures and tables are included in the `ref_entries`.
 
 ### Limitations and Observations
@@ -27,13 +52,15 @@ This is a fork of the **doc2json** project to work with our system. It provides 
 - **Paragraph Recognition**:
   - Grobid does a fairly good job of connecting rows, though it's not 100% accurate with paragraphs.
   - It sometimes misdivides paragraphs or adds additional paragraphs in sections like the abstract.
-  - There are cases where page breaks disrupt paragraph detection, although some of these are fixed automatically by Grobid.
+  - There are cases where *page breaks disrupt paragraph detection*, although some of these are fixed automatically by Grobid.
   
 - **Section Titles**:
-  - Each section of the body text includes a **section** field, which contains the section title.
-  - In some cases, the section title is missing or only includes a subtitle (e.g., "SME attribution visualization of Aqueous solubility", instead of "Methods", "Results").
+  - Each section of the body text includes a `"section"` field, which contains the section title; 
+  - There are `"sec_num"` fields, which contains the section number like `1` or `2.1` or `2.2.`, only when this number is explicitly wriiten in the text.
+  - Frequently, the section title is missing or only includes a subtitle (e.g., "SME attribution visualization of Aqueous solubility", instead of "Methods", "Results").
   
 - **Equations**:
+  - Only 行间公式 are separated into another entry: `"text": "EQUATION"` but with a `"eq_spans"`.
   - The detection and extraction of equations is not perfect at this stage. More refinement is needed for better handling of mathematical content.
 
 ## TODO
