@@ -1,6 +1,6 @@
 # doc2json for RAG
 
-This is a fork of the **doc2json** project to work with our system. It provides a **FastAPI** that accepts a PDF and returns the parsed content in a structured JSON format. The (temporary) files are stored in the `test/work` directory.
+This is a fork of the **doc2json** project to work with our system. It provides a **Flask API** that accepts a PDF and returns the parsed content in a structured JSON format. The (temporary) files are stored in the `test/work` directory.
 
 Architecture:
 
@@ -13,13 +13,15 @@ flowchart TB;
 
 ## Requirements
 
-- Install this package.
+- Install this package. You will also need to refer to the original `doc2json` project.
 
   ```shell
-  conda create -n pdf
+  conda create -n pdf python=3.8
   conda activate pdf
-  conda install pip
-  pip install -e requirements.txt
+  conda install pip -y
+  pip install tqdm beautifulsoup4 boto3 requests Flask lxml python-magic latex2mathml itsdangerous 
+  # no more pip install -r requirements.txt
+  python setup.py develop    
   ```
 - **Grobid**: This system relies on Grobid for processing PDFs into structured data.
   - You need to [run Grobid](https://grobid.readthedocs.io/en/latest/Run-Grobid/) in Docker. It has been tested in (**Windows Docker Desktop**? and) **Windows WSL**.
@@ -35,7 +37,7 @@ flowchart TB;
   ```shell
   bash restart.sh
   ```
-  Please install Docker and it's usually add to `$PATH`.
+  Please install Docker and it's usually add to `$PATH`. Refer to https://github.com/dongyubin/DockerHub to configure DockerHub 国内加速镜像列表. Then, `docker pull grobid/grobid:0.8.1` will be viable with domestic sources.
 
 ## Usage
 

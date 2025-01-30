@@ -5,7 +5,7 @@ import hashlib
 import requests
 from flask import Flask, request, jsonify, flash, url_for, redirect, render_template, send_file
 from doc2json.grobid2json.process_pdf import process_pdf_stream
-from doc2json.tex2json.process_tex import process_tex_stream
+# from doc2json.tex2json.process_tex import process_tex_stream
 from doc2json.jats2json.process_jats import process_jats_stream
 
 app = Flask(__name__)
@@ -32,12 +32,12 @@ def upload_file():
             results = process_pdf_stream(filename, pdf_sha, pdf_content)
             return jsonify(results)
         # read latex file
-        elif filename.endswith('gz'):
-            zip_stream = uploaded_file.stream
-            zip_content = zip_stream.read()
-            # get results
-            results = process_tex_stream(filename, zip_content)
-            return jsonify(results)
+        # elif filename.endswith('gz'):
+        #     zip_stream = uploaded_file.stream
+        #     zip_content = zip_stream.read()
+        #     # get results
+        #     results = process_tex_stream(filename, zip_content)
+        #     return jsonify(results)
         # read nxml file (jats)
         elif filename.endswith('nxml'):
             xml_stream = uploaded_file.stream
