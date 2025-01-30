@@ -2,7 +2,7 @@
 
 # Define variables
 FLASK_PORT=8080
-FLASK_SCRIPT="doc2json/flask/app.py"
+FLASK_SCRIPT="app.py"
 FLASK_LOG="flask_app.log"
 
 DOCKER_PORT=8070

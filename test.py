@@ -66,9 +66,10 @@ def extract_metadata(json_data):
 if __name__ == "__main__":
     output_dir = "tests/work"
     # Example PDF path
-    # prefix = '2023-Chemistry-intuitive explanation of graph neural networks for molecular property prediction with substructure masking'
+    prefix = '2023-Chemistry-intuitive explanation of graph neural networks for molecular property prediction with substructure masking'
     # prefix = 'dudev-lim-2013-competition-among-metal-ions-for-protein-binding-sites-determinants-of-metal-ion-selectivity-in-proteins'
-    prefix = 'transformato'
+    # prefix = 'transformato'
+    prefix = 'd1nr05267e'
 
     pdf_path = fr"{output_dir}/{prefix}.pdf"
 
@@ -91,3 +92,17 @@ if __name__ == "__main__":
         markdown_file.write(main_text)
 
     print(f"Main text has been written to: {markdown_output_path}")
+
+
+#%%
+if __name__ == "__main__":
+    import requests
+    # Define API URL
+    API_URL = "http://localhost:8080/"
+    pdf_file = {"file": open(
+        "tests/work/2023-Chemistry-intuitive explanation of graph neural networks for molecular property prediction with substructure masking.pdf",
+        "rb")}
+    # Send POST request to Flask API
+    response = requests.post(API_URL, files=pdf_file)
+    # Print the JSON response
+    # print(response.json())

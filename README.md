@@ -6,17 +6,14 @@ returns the parsed content in a structured JSON format. The (temporary) files ar
 Architecture:
 
 ```mermaid
-flowchart TB
-;
+flowchart TB;
     A[PDF] --> B[Grobid] --> C[JSON]
-    C --> D[full text]
-    C --> E[sections]
 ```
 
 ## Requirements and setup
 
 - Install this package. You will also need to refer to the original `doc2json` project. 
-  I edited `doc2json\flask\app.py` since we don't need tex support.
+  I edited `doc2json\flask\app.py` since we don't need tex support. But it's still too slow. So I use `app.py`.
 
   ```shell
   conda create -n pdf python=3.8
@@ -42,7 +39,7 @@ flowchart TB
 
   ```bash
   docker run --rm --gpus all --init --ulimit core=0 -p 8070:8070 grobid/grobid:0.8.1
-  python doc2json\flask\app.py
+  python app.py
   ```
 
 ### Usage
@@ -51,31 +48,37 @@ flowchart TB
 
 ```python
 import requests
-
 # Define API URL
-API_URL = "http://localhost:8080/"
+API_URL = "http://localhost:8080/process_pdf"  # Change to actual server if deployed
 # API_URL = "http://118.31.3.22:8080/"
 
-# File to upload
-pdf_file = {"file": open("sample.pdf", "rb")}
-# Send POST request to Flask API
-response = requests.post(API_URL, files=pdf_file)
-# Print the JSON response
-print(response.json())
+pdf_path = r"E:\GitHub-repo\literature-analysis\users\username\research_paper\Computational design of serine hydrolases.pdf"
+with open(pdf_path, "rb") as pdf_file:
+    files = {"file": pdf_file}
+    # Send POST request to Flask API
+    response = requests.post(API_URL, files=files)
+    if response.status_code == 200:
+        print("JSON output saved successfully!")
+        print(response.json())  # Returns JSON file details
+    else:
+        print(f"Error: {response.status_code}, {response.json()}")
 ```
 
 #### Upload a PDF from a URL
 
 ```python
 import requests
+API_URL = "http://localhost:8080/process_pdf_url"  # Change to actual deployment URL
 
-API_URL = "http://localhost:8080/upload_url"
+pdf_url = "https://arxiv.org/pdf/2301.12345.pdf"
+response = requests.get(API_URL, params={"url": pdf_url})
 
-# Send GET request with a PDF URL
-response = requests.get(API_URL, params={"url": "https://arxiv.org/pdf/2301.12345.pdf"})
-
-# Print extracted text
-print(response.json())
+# Print response
+if response.status_code == 200:
+    print("✅ Successfully processed PDF from URL!")
+    print(response.json())  # JSON file details
+else:
+    print(f"Error: {response.status_code}, {response.json()}")
 ```
 
 ## Behavior, and json structure
