@@ -78,16 +78,6 @@ def parse_pdf_in_memory(pdf_bytes: bytes, filename: str = "uploaded.pdf",
 def process_pdf():
     """
     全程在内存中解析上传 PDF，不创建磁盘文件，返回 doc2json 的解析结果。
-
-    测试用例:
-    ```python
-    import requests
-    API_URL = "http://localhost:8080/process_pdf"
-    pdf_path = r"E:\\path\\with\\spaces\\yourfile.pdf"
-    with open(pdf_path, 'rb') as f:
-        response = requests.post(API_URL, files={'file': f})
-        print(response.status_code, response.json())
-    ```
     """
     if 'file' not in request.files:
         return jsonify({"error": "No file uploaded"}), 400

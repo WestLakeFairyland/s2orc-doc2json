@@ -1,12 +1,12 @@
 # doc2json for RAG
 
 This is a fork of the **doc2json** project to work with our system. It provides a **Flask API** that accepts a PDF and
-returns the parsed content in a structured JSON format. The (temporary) files are stored in the `test/work` directory.
+returns the parsed content in a structured JSON format in memory. In `test.py`, the (temporary) files are stored in the `test/work` directory.
 
 Architecture:
 
 ```mermaid
-flowchart TB;
+flowchart LR;
     A[PDF] --> B[Grobid] --> C[JSON]
 ```
 
@@ -49,8 +49,8 @@ flowchart TB;
 ```python
 import requests
 # Define API URL
-API_URL = "http://localhost:8080/process_pdf"  # Change to actual server if deployed
-# API_URL = "http://118.31.3.22:8080/"
+# API_URL = "http://localhost:8080/process_pdf"  # local
+API_URL = "http://118.31.3.22:8080/process_pdf"  # remote server
 
 pdf_path = r"E:\GitHub-repo\literature-analysis\users\username\research_paper\Computational design of serine hydrolases.pdf"
 with open(pdf_path, "rb") as pdf_file:
