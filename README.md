@@ -30,8 +30,26 @@ flowchart LR;
 - Run `restart.sh`. Modify the configs in it if you want.
 
   ```shell
-  bash restart.sh
+  # 查看服务状态
+  ./service_manager.sh status
+
+  # 启动所有服务
+  ./service_manager.sh start
+
+  # 停止所有服务
+  ./service_manager.sh stop
+
+  # 查看状态
+  ./service_manager.sh status
   ```
+
+  输出示例:
+  ```bash
+  === Service Status ===
+  Flask: Running
+  Grobid: Running (Container ID: a1b2c3d4e5)
+  ```
+
   Please install Docker and it's usually add to `$PATH`. Refer to https://github.com/dongyubin/DockerHub to configure
   DockerHub 国内加速镜像列表. Then, `docker pull grobid/grobid:0.8.1` will be viable with domestic sources.
 
