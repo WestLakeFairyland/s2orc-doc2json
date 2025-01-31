@@ -1,5 +1,8 @@
 .idea/
 *__pycache__/
+grobid_container.id
+flask_app.log
+
 *.egg-info/
 tests/output/*
 tests/temp/*
