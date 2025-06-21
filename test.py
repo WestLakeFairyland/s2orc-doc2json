@@ -66,10 +66,13 @@ def extract_metadata(json_data):
 if __name__ == "__main__":
     output_dir = "tests/work"
     # Example PDF path
-    prefix = '2023-Chemistry-intuitive explanation of graph neural networks for molecular property prediction with substructure masking'
+    # prefix = '2023-Chemistry-intuitive explanation of graph neural networks for molecular property prediction with substructure masking'
     # prefix = 'dudev-lim-2013-competition-among-metal-ions-for-protein-binding-sites-determinants-of-metal-ion-selectivity-in-proteins'
     # prefix = 'transformato'
-    prefix = 'd1nr05267e'
+    # prefix = 'd1nr05267e'
+    # prefix = 'Potential interference of graphene nanosheets in immune response via disrupting the recognition of HLA-presented KK10 by TCR- a molecular dynamics simulation study'
+    prefix = 'Allele-selective lowering of mutant HTT protein by HTT–LC3 linker compounds'
+
 
     pdf_path = fr"{output_dir}/{prefix}.pdf"
 

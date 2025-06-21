@@ -27,6 +27,9 @@ flowchart LR;
     - You need to [run Grobid](https://grobid.readthedocs.io/en/latest/Run-Grobid/) in Docker. It has been tested in 
       (**Windows Docker Desktop**? and) **Windows WSL**.
     - Grobid should only take a few seconds to process a PDF.
+    - Please install Docker and it's usually add to `$PATH`. Refer to https://github.com/dongyubin/DockerHub to configure
+  DockerHub 国内加速镜像列表. Then, `docker pull grobid/grobid:0.8.1` will be viable with domestic sources.
+
 - Run `restart.sh`. Modify the configs in it if you want.
 
   ```shell
@@ -50,9 +53,6 @@ flowchart LR;
   Grobid: Running (Container ID: a1b2c3d4e5)
   ```
 
-  Please install Docker and it's usually add to `$PATH`. Refer to https://github.com/dongyubin/DockerHub to configure
-  DockerHub 国内加速镜像列表. Then, `docker pull grobid/grobid:0.8.1` will be viable with domestic sources.
-
   Or you can run these in two separate command prompts (local usage):
 
   ```bash
@@ -60,9 +60,9 @@ flowchart LR;
   python app.py
   ```
 
-### Usage
+## Usage
 
-#### Upload a PDF File (Using Requests)
+### Upload a PDF File
 
 ```python
 import requests
@@ -82,14 +82,15 @@ with open(pdf_path, "rb") as pdf_file:
         print(f"Error: {response.status_code}, {response.json()}")
 ```
 
-#### Upload a PDF from a URL
+### Upload a PDF from a URL
 
 ```python
 import requests
 API_URL = "http://localhost:8080/process_pdf_url"  # Change to actual deployment URL
-
 pdf_url = "https://arxiv.org/pdf/2301.12345.pdf"
 response = requests.get(API_URL, params={"url": pdf_url})
+# or
+# response = requests.get("http://118.31.3.22:8080/process_pdf_url&url=https://arxiv.org/pdf/2301.12345.pdf")
 
 # Print response
 if response.status_code == 200:
@@ -98,6 +99,11 @@ if response.status_code == 200:
 else:
     print(f"Error: {response.status_code}, {response.json()}")
 ```
+
+
+### Note
+
+It might be very slow in a 2CPU 4GB cloud machine...
 
 ## Behavior, and json structure
 
